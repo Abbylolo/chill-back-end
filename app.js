@@ -3,7 +3,7 @@ var cookieParser = require("cookie-parser");
 var morgan = require("morgan");
 var createError = require("http-errors");
 const express = require("express");
-const logger = require("./logger");
+const logger = require("./app/logger");
 
 // 引入配置文件
 const { APP_PORT } = require("./app/config");
@@ -42,7 +42,7 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error"); */
-  logger.error(`${req.method} ${req.originalUrl}` + err.message);
+  logger.error(`${req.method} ${req.originalUrl}` + ":" + err.message);
   const errorMsg = err.message;
   res.status(err.status || 500).json({
     code: err.status,
