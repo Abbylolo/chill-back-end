@@ -31,4 +31,5 @@ connections.getConnection(function (err, conn) {
   });
 });
 
-module.exports = connections.promise();
+// module.exports = connections.promise();
+module.exports = connections;

@@ -15,4 +15,15 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.get("/user", (req, res) => {
+  res.json({
+    code: 200,
+    msg: "成功",
+    data: {
+      username: "zhangsan",
+      email: "110@163.com",
+    },
+  });
+});
+
 module.exports = router;

@@ -1,12 +1,13 @@
 var path = require("path");
 var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+var morgan = require("morgan");
 var createError = require("http-errors");
 const express = require("express");
+const logger = require("./logger");
 
 // 引入配置文件
 const { APP_PORT } = require("./app/config");
-//连接数据库
+// 连接数据库
 require("./app/database");
 const router = require("./routes");
 
@@ -21,7 +22,8 @@ app.use(router);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(logger("dev"));
+// 使用morgan打印日志文件
+app.use(morgan("dev"));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
@@ -33,13 +35,21 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
+  /* // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render("error"); */
+  logger.error(`${req.method} ${req.originalUrl}` + err.message);
+  const errorMsg = err.message;
+  res.status(err.status || 500).json({
+    code: err.status,
+    success: false,
+    message: errorMsg,
+    data: {},
+  });
 });
 
 app.listen(APP_PORT, () => {

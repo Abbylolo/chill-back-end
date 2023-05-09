@@ -2,7 +2,6 @@ const { getUserByUsername } = require("../services/services");
 
 //校验注册的中间件
 const verfyRegister = async (req, res, next) => {
-  console.log("req", req.body);
   const { username, password } = req.body;
   if (!username || !password) {
     res.status(401).json({
@@ -13,7 +12,8 @@ const verfyRegister = async (req, res, next) => {
   }
   try {
     //查询数据库，查询用户在数据库中是否存在
-    const dbRes = await getUserByUsername(username, password);
+    const dbRes = await getUserByUsername(username);
+    console.log("dbRes", dbRess);
     if (dbRes.length !== 0) {
       res.send({
         code: "-1",
