@@ -13,6 +13,16 @@ const router = require("./routes");
 
 const app = express();
 
+// 跨域
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  res.header("X-Powered-By", " 3.2.1");
+  res.header("Content-Type", "application/json;charset=utf-8");
+  next();
+});
+
 // 使用json解析和router的顺序不能换！
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -45,7 +55,7 @@ app.use(function (err, req, res, next) {
   logger.error(`${req.method} ${req.originalUrl}` + ":" + err.message);
   const errorMsg = err.message;
   res.status(err.status || 500).json({
-    code: err.status,
+    status: err.status,
     success: false,
     message: errorMsg,
     data: {},

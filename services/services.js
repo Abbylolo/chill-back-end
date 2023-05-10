@@ -6,18 +6,44 @@ const connection = require("../app/database");
  * @returns 匹配的用户信息/空
  */
 function getUserByUsername(username) {
-  connection.query("SELECT * FROM User", (err, results, fields) => {
-    if (err) throw err;
-    results.forEach((item) => {
-      if (item.userName == username) {
-        return item;
+  return new Promise((resolve, reject) => {
+    const sqlStr = "SELECT * FROM User where userName='" + `${username}` + "'";
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
       }
     });
   });
 }
 
-function insertUserByUsername(username, password) {
-  return;
+/**
+ * 插入一条用户信息
+ * @param username
+ * @param password
+ * @returns
+ */
+function insertUser(username, password, brief, avatarUrl) {
+  return new Promise((resolve, reject) => {
+    const sqlStr =
+      "INSERT INTO User  (`userName`,`avatarUrl`,`brief`,`password`) VALUES('" +
+      `${username}` +
+      "','" +
+      `${avatarUrl}` +
+      "','" +
+      `${brief}` +
+      "','" +
+      `${password}` +
+      "');";
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
 }
 
-module.exports = { getUserByUsername, insertUserByUsername };
+module.exports = { getUserByUsername, insertUser };

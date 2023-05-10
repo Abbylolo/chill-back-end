@@ -3,21 +3,17 @@ const router = express.Router();
 // 中间件
 const { verfyRegister } = require("../middleware/middleware");
 // 控制器
-const { handleRegister } = require("../controller/controller");
+const { handleRegister, handleLogin } = require("../controller/controller");
 
-//用户注册
+// 用户注册
 router.post("/register", verfyRegister, handleRegister);
 
-router.post("/login", (req, res) => {
-  res.json({
-    code: 200,
-    msg: "登录成功",
-  });
-});
+// 用户登录
+router.post("/login", handleLogin);
 
 router.get("/user", (req, res) => {
   res.json({
-    code: 200,
+    status: 200,
     msg: "成功",
     data: {
       username: "zhangsan",
