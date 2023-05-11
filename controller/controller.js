@@ -190,6 +190,7 @@ class appController {
       );
       res.json({
         code: 200,
+        postId,
         msg: "发布摄影贴成功",
       });
     } catch (error) {

@@ -177,6 +177,16 @@ function alterPostLiker(postId, liker) {
   });
 }
 
+/**
+ * 编辑摄影贴信息
+ * @param {int} postId
+ * @param {String} brief
+ * @param {String} cameraInfo
+ * @param {String} imgUrls
+ * @param {String} parameter
+ * @param {String} tags
+ * @returns
+ */
 function editPost(postId, brief, cameraInfo, imgUrls, parameter, tags) {
   return new Promise((resolve, reject) => {
     const sqlStr =
