@@ -12,3 +12,8 @@
 2023-05-10 11:44:43 error [app.js]: POST /common/upload:Not Found
 2023-05-10 11:44:59 error [app.js]: POST /common/upload:Not Found
 2023-05-10 11:49:34 error [app.js]: POST /common/upload:Not Found
+2023-05-10 16:40:00 error [app.js]: POST /post/add:Not Found
+2023-05-10 17:30:37 error [app.js]: POST /post/add:Not Found
+2023-05-10 21:41:25 error [app.js]: POST /post/getUserPostList:Not Found
+2023-05-10 21:55:18 error [app.js]: POST /post/getPostByUserId:Not Found
+2023-05-11 14:06:47 error [app.js]: POST /post/getPostDetail:Unexpected token '2', "#" is not valid JSON

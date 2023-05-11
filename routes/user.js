@@ -13,7 +13,7 @@ router.post("/login", handleLogin);
 
 router.get("/user", (req, res) => {
   res.json({
-    status: 200,
+    code: 200,
     msg: "成功",
     data: {
       username: "zhangsan",
