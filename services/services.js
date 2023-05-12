@@ -58,7 +58,7 @@ function insertUser(username, password, brief, avatarUrl) {
  * @param userId 入驻者编号
  * @param createTime 创建时间
  * @param circleId 摄影圈编号
- * @returns
+ * @returns 摄影贴编号
  */
 function insertPost(
   brief,
@@ -162,9 +162,9 @@ function getPostListByUserId(userId) {
 function alterPostLiker(postId, liker) {
   return new Promise((resolve, reject) => {
     const sqlStr =
-      "UPDATE Post SET liker =" +
+      "UPDATE Post SET liker ='" +
       `${liker}` +
-      " WHERE `postId`='" +
+      "' WHERE `postId`='" +
       `${postId}` +
       "';";
     connection.query(sqlStr, (err, results, fields) => {
@@ -213,6 +213,78 @@ function editPost(postId, brief, cameraInfo, imgUrls, parameter, tags) {
   });
 }
 
+/**
+ * 获取全部摄影圈列表
+ * @returns 摄影圈列表
+ */
+function getAllCircleList() {
+  const sqlStr = "SELECT * FROM Circle;";
+  return new Promise((resolve, reject) => {
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+/**
+ * 创建一个摄影圈
+ * @param {int} userId
+ * @param {String} name
+ * @param {String} brief
+ * @param {String} avatarUrl
+ * @returns 摄影圈编号
+ */
+function insertCircle(userId, name, brief, avatarUrl, createTime) {
+  const sqlStr =
+    "INSERT INTO Circle (`creator`,`name`,`brief`,`avatarUrl`,`createTime`) VALUES('" +
+    `${userId}` +
+    "','" +
+    `${name}` +
+    "','" +
+    `${brief}` +
+    "','" +
+    `${avatarUrl}` +
+    "','" +
+    `${createTime}` +
+    "');";
+  return new Promise((resolve, reject) => {
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results.insertId);
+      }
+    });
+  });
+}
+
+/**
+ * 改变摄影圈圈友
+ * @param {int} circleId
+ * @param {String} fans
+ * @returns
+ */
+function changeCircleFans(circleId, fans) {
+  const sqlStr =
+    "UPDATE Circle SET fans ='" +
+    `${fans}` +
+    "' WHERE `circleId`='" +
+    `${circleId}` +
+    "';";
+  return new Promise((resolve, reject) => {
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
 module.exports = {
   getUserByUsername,
   insertUser,
@@ -222,4 +294,7 @@ module.exports = {
   deletePost,
   alterPostLiker,
   editPost,
+  insertCircle,
+  getAllCircleList,
+  changeCircleFans,
 };

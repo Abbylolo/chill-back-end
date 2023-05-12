@@ -5,6 +5,7 @@ const fs = require("fs");
 const { log } = require("console");
 
 class appController {
+  /* 登录注册模块 */
   // 处理注册的业务逻辑
   async handleRegister(req, res) {
     // 1、获取前端传过来的数据
@@ -115,6 +116,78 @@ class appController {
     });
   }
 
+  /* 摄影圈模块 */
+  // 查询摄影贴列表
+  async getAllCircleList(req, res) {
+    const { userId } = req.body;
+    try {
+      const allCircleList = await db.getAllCircleList();
+      let circleList = [];
+      for (let i = 1; i < allCircleList.length; i++) {
+        const circle = allCircleList[i];
+        // 添加状态 0-未加入的的；1-加入的；2-用户创建的
+        circle.state = 0;
+        // 粉丝列表 字符转数组
+        circle.fans = strToArray(circle.fans);
+
+        if (circle.creator == userId) {
+          circle.state = 2;
+        }
+
+        circle.fansNum = circle.fans.length;
+        if (circle.fans.includes(userId.toString())) {
+          circle.state = 1;
+        }
+        circleList.push(circle);
+      }
+
+      res.json({
+        code: 200,
+        allCircleList: circleList,
+        msg: "已查询到全部摄影圈",
+      });
+    } catch (error) {
+      res.status(500).send("服务器出问题:" + error);
+    }
+  }
+
+  // 创建摄影圈
+  async createCircle(req, res) {
+    const { userId, name, brief, avatarUrl } = req.body;
+    const createTime = new Date().Format("yyyy年MM月dd日 HH:mm:ss");
+    try {
+      const dbRes = await db.insertCircle(
+        userId,
+        name,
+        brief,
+        avatarUrl,
+        createTime
+      );
+      res.json({
+        code: 200,
+        circleId: dbRes,
+        msg: "成功创建摄影圈",
+      });
+    } catch (error) {
+      res.status(500).send("服务器出问题:" + error);
+    }
+  }
+
+  // 改变摄影圈圈友信息
+  async changeCircleFans(req, res) {
+    const { circleId, fans } = req.body;
+    const fansStr = arrayToStr(fans);
+    try {
+      await db.changeCircleFans(circleId, fansStr);
+      res.json({
+        code: 200,
+        msg: "摄影圈圈友数据更新成功",
+      });
+    } catch (error) {
+      res.status(500).send("服务器出问题:" + error);
+    }
+  }
+
   /* 摄影贴模块 */
   // 查询摄影贴详情
   async getPostByPostId(req, res) {
@@ -162,6 +235,7 @@ class appController {
       res.status(500).send("服务器出问题:" + error);
     }
   }
+
   // 发布摄影贴
   async addPost(req, res) {
     const { brief, cameraInfo, imgUrls, parameter, tags, userId, circleId } =
@@ -225,6 +299,7 @@ class appController {
       } else {
         remove(oldLiker, userId);
       }
+
       liker = arrayToStr(oldLiker);
 
       await db.alterPostLiker(postId, liker);
@@ -243,7 +318,9 @@ class appController {
     // 图片数组字符化
     const imgUrlStr = arrayToStr(imgUrls);
     // 标签数组字符化
+    console.log("tags", tags);
     const tagStr = arrayToStr(tags);
+    console.log("tagStr", tagStr);
 
     try {
       await db.editPost(
@@ -304,29 +381,25 @@ function remove(arr, item) {
 // 数组转字符串
 function arrayToStr(arr) {
   if (arr.length == 0) {
-    return null;
+    return "";
   }
   let str = "";
-  let idx = 0;
   arr.forEach((item) => {
-    str += item;
-    if (idx < item.length - 1) {
-      str += ",";
-    }
-    idx++;
+    str += item + ",";
   });
   return str;
 }
 
 // 字符串转数组
 function strToArray(str) {
-  if (!str) {
+  if (!str || str == null || str == "") {
     return [];
   }
   let arr = str.split(",");
   if (arr.length > 1) {
     arr.splice(arr.length - 1, 1);
   }
+
   return arr;
 }
 

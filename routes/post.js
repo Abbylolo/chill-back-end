@@ -15,6 +15,6 @@ router.post("/getUserPostList", getUserPostList);
 router.post("/deletePost", deletePost);
 router.post("/likePost", likePost);
 router.post("/getPostDetail", getPostByPostId);
-router.post("/editPost", editPost);
+router.post("/editPost", vertifyAddPost, editPost);
 
 module.exports = router;

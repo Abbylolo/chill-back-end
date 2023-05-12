@@ -17,3 +17,4 @@
 2023-05-10 21:41:25 error [app.js]: POST /post/getUserPostList:Not Found
 2023-05-10 21:55:18 error [app.js]: POST /post/getPostByUserId:Not Found
 2023-05-11 14:06:47 error [app.js]: POST /post/getPostDetail:Unexpected token '2', "#" is not valid JSON
+2023-05-12 12:25:05 error [app.js]: POST /circle/createCircle:Not Found
