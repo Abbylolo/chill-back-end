@@ -117,7 +117,7 @@ class appController {
   }
 
   /* 摄影圈模块 */
-  // 查询摄影贴列表
+  // 查询摄影圈列表
   async getAllCircleList(req, res) {
     const { userId } = req.body;
     try {
@@ -173,6 +173,42 @@ class appController {
     }
   }
 
+  // 设置摄影圈信息
+  async updateCircle(req, res) {
+    const { circleId, name, brief, avatarUrl } = req.body;
+    try {
+      const dbRes = await db.updateCircle(circleId, name, brief, avatarUrl);
+      res.json({
+        code: 200,
+        msg: "摄影圈信息已更新",
+      });
+    } catch (error) {
+      res.status(500).send("服务器出问题:" + error);
+    }
+  }
+
+  // 获取摄影圈详情
+  async getCircleDetail(req, res) {
+    const { circleId } = req.body;
+    try {
+      const dbRes = await db.getCircleDetail(circleId);
+      if (dbRes.length == 0) {
+        res.json({
+          code: -1,
+          data: dbRes[0],
+          msg: "不存在该编号数据",
+        });
+      }
+      res.json({
+        code: 200,
+        data: dbRes[0],
+        msg: "查询摄影贴成功",
+      });
+    } catch (error) {
+      res.status(500).send("服务器出问题:" + error);
+    }
+  }
+
   // 改变摄影圈圈友信息
   async changeCircleFans(req, res) {
     const { circleId, fans } = req.body;
@@ -182,6 +218,35 @@ class appController {
       res.json({
         code: 200,
         msg: "摄影圈圈友数据更新成功",
+      });
+    } catch (error) {
+      res.status(500).send("服务器出问题:" + error);
+    }
+  }
+
+  // 获取摄影圈摄影贴列表
+  async getCirclePostList(req, res) {
+    const { circleId, userId } = req.body;
+    try {
+      const dbRes = await db.getCirclePostList(circleId);
+      dbRes.forEach((item) => {
+        item.tags = strToArray(item.tags);
+        item.imgUrls = strToArray(item.imgUrls);
+        item.liker = strToArray(item.liker);
+        // liked - 该用户是否点赞该帖子
+        item.liked = false;
+        item.liker.forEach((likeUser) => {
+          if (likeUser == userId.toString()) {
+            item.liked = true;
+          }
+        });
+      });
+      // 按时间倒序返回
+      dbRes.reverse();
+      res.json({
+        code: 200,
+        data: dbRes,
+        msg: "查询成功",
       });
     } catch (error) {
       res.status(500).send("服务器出问题:" + error);

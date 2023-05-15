@@ -263,6 +263,49 @@ function insertCircle(userId, name, brief, avatarUrl, createTime) {
 }
 
 /**
+ * 设置摄影圈信息
+ * @param {int} circleId
+ * @param {String} name
+ * @param {String} brief
+ * @param {String} avatarUrl
+ * @returns
+ */
+function updateCircle(circleId, name, brief, avatarUrl) {
+  return new Promise((resolve, reject) => {
+    const sqlStr =
+      "UPDATE Circle SET brief ='" +
+      `${brief}` +
+      "',name='" +
+      `${name}` +
+      "',avatarUrl='" +
+      `${avatarUrl}` +
+      "' WHERE `circleId`='" +
+      `${circleId}` +
+      "';";
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+function getCircleDetail(circleId) {
+  return new Promise((resolve, reject) => {
+    const sqlStr = "SELECT * FROM Circle WHERE circleId=" + `${circleId}` + ";";
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+/**
  * 改变摄影圈圈友
  * @param {int} circleId
  * @param {String} fans
@@ -285,6 +328,28 @@ function changeCircleFans(circleId, fans) {
     });
   });
 }
+
+/**
+ * 获取摄影圈中的摄影贴列表
+ * @param {int} circleId
+ * @returns 摄影贴列表
+ */
+function getCirclePostList(circleId) {
+  return new Promise((resolve, reject) => {
+    const sqlStr =
+      "SELECT * FROM User u,Post p WHERE u.userId=p.User_userId AND Circle_circleId=" +
+      `${circleId}` +
+      ";";
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
 module.exports = {
   getUserByUsername,
   insertUser,
@@ -297,4 +362,7 @@ module.exports = {
   insertCircle,
   getAllCircleList,
   changeCircleFans,
+  getCirclePostList,
+  updateCircle,
+  getCircleDetail,
 };
