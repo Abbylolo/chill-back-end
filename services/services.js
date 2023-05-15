@@ -135,13 +135,19 @@ function getPostByPostId(postId) {
   });
 }
 
+/**
+ * 根据关键词搜索摄影贴
+ * @param {String} keyword
+ * @param {int} currentPage
+ * @param {int} pageSize
+ * @returns
+ */
 function getPostListByKeyword(keyword, currentPage, pageSize) {
-  const limit = `${(currentPage - 1) * pageSize},${currentPage * pageSize - 1}`;
   let sqlStr = "";
   if (keyword == "全部") {
-    sqlStr = `SELECT * FROM Post limit ${limit}`;
+    sqlStr = `SELECT * FROM Post`;
   } else {
-    sqlStr = `SELECT * FROM Post where brief like "%${keyword}%" OR tags like "%${keyword}%" limit ${limit}`;
+    sqlStr = `SELECT * FROM Post where brief like "%${keyword}%" OR tags like "%${keyword}%"`;
   }
   return new Promise((resolve, reject) => {
     connection.query(sqlStr, (err, results, fields) => {
@@ -282,6 +288,24 @@ function insertCircle(userId, name, brief, avatarUrl, createTime) {
 }
 
 /**
+ * 删除一个摄影圈
+ * @param {int} circleId
+ * @returns
+ */
+function deleteCircle(circleId) {
+  return new Promise((resolve, reject) => {
+    const sqlStr = `DELETE FROM Circle WHERE circleId=${circleId};`;
+    connection.query(sqlStr, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
+/**
  * 设置摄影圈信息
  * @param {int} circleId
  * @param {String} name
@@ -390,4 +414,5 @@ module.exports = {
   updateCircle,
   getCircleDetail,
   getPostListByKeyword,
+  deleteCircle,
 };

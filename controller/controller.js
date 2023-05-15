@@ -173,6 +173,27 @@ class appController {
     }
   }
 
+  // 删除摄影圈
+  async deleteCircle(req, res) {
+    const { circleId } = req.body;
+    try {
+      const postList = await db.getCirclePostList(circleId);
+      if (postList.length > 0) {
+        res.json({
+          code: -1,
+          msg: "摄影圈中存在摄影贴，不可删除",
+        });
+      }
+      await db.deleteCircle(circleId);
+      res.json({
+        code: 200,
+        msg: "删除摄影圈成功",
+      });
+    } catch (error) {
+      res.status(500).send("服务器出问题:" + error);
+    }
+  }
+
   // 设置摄影圈信息
   async updateCircle(req, res) {
     const { circleId, name, brief, avatarUrl } = req.body;
@@ -258,10 +279,11 @@ class appController {
   async getPostListByKeyword(req, res) {
     const { userId, keyword, currentPage, pageSize } = req.body;
     try {
-      const dbRes = await db.getPostListByKeyword(
-        keyword,
-        currentPage,
-        pageSize
+      let dbRes = await db.getPostListByKeyword(keyword, currentPage, pageSize);
+      const totalNum = dbRes.length;
+      dbRes = dbRes.slice(
+        (currentPage - 1) * pageSize,
+        currentPage * pageSize - 1
       );
       dbRes.forEach((item) => {
         item.tags = strToArray(item.tags);
@@ -278,7 +300,7 @@ class appController {
       res.json({
         code: 200,
         postList: dbRes,
-        totalNum: 10,
+        totalNum,
         msg: "查询摄影贴成功",
       });
     } catch (error) {

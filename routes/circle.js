@@ -7,9 +7,11 @@ const {
   getCirclePostList,
   updateCircle,
   getCircleDetail,
+  deleteCircle,
 } = require("../controller/controller");
 
 router.post("/createCircle", createCircle);
+router.post("/deleteCircle", deleteCircle);
 router.post("/getAllCircleList", getAllCircleList);
 router.post("/changeCircleFans", changeCircleFans);
 router.post("/getCirclePostList", getCirclePostList);
