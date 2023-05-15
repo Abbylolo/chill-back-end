@@ -135,6 +135,25 @@ function getPostByPostId(postId) {
   });
 }
 
+function getPostListByKeyword(keyword, currentPage, pageSize) {
+  const limit = `${(currentPage - 1) * pageSize},${currentPage * pageSize - 1}`;
+  let sqlStr = "";
+  if (keyword == "全部") {
+    sqlStr = `SELECT * FROM Post limit ${limit}`;
+  } else {
+    sqlStr = `SELECT * FROM Post where brief like "%${keyword}%" OR tags like "%${keyword}%" limit ${limit}`;
+  }
+  return new Promise((resolve, reject) => {
+    connection.query(sqlStr, (err, results, fields) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+}
+
 /**
  * 获取入驻者摄影贴列表
  * @param {String} userId 入驻者编号
@@ -292,6 +311,11 @@ function updateCircle(circleId, name, brief, avatarUrl) {
   });
 }
 
+/**
+ * 获取摄影圈详情
+ * @param {int} circleId
+ * @returns
+ */
 function getCircleDetail(circleId) {
   return new Promise((resolve, reject) => {
     const sqlStr = "SELECT * FROM Circle WHERE circleId=" + `${circleId}` + ";";
@@ -365,4 +389,5 @@ module.exports = {
   getCirclePostList,
   updateCircle,
   getCircleDetail,
+  getPostListByKeyword,
 };

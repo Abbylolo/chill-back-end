@@ -7,9 +7,11 @@ const {
   likePost,
   getPostByPostId,
   editPost,
+  getPostListByKeyword,
 } = require("../controller/controller");
 const { vertifyAddPost } = require("../middleware/middleware");
 
+router.post("/getPostListByKeyword", getPostListByKeyword);
 router.post("/add", vertifyAddPost, addPost);
 router.post("/getUserPostList", getUserPostList);
 router.post("/deletePost", deletePost);

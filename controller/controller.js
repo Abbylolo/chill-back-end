@@ -201,7 +201,7 @@ class appController {
       }
       res.json({
         code: 200,
-        data: dbRes[0],
+        circleInfo: dbRes[0],
         msg: "查询摄影贴成功",
       });
     } catch (error) {
@@ -254,6 +254,38 @@ class appController {
   }
 
   /* 摄影贴模块 */
+  // 根据关键词搜索摄影贴
+  async getPostListByKeyword(req, res) {
+    const { userId, keyword, currentPage, pageSize } = req.body;
+    try {
+      const dbRes = await db.getPostListByKeyword(
+        keyword,
+        currentPage,
+        pageSize
+      );
+      dbRes.forEach((item) => {
+        item.tags = strToArray(item.tags);
+        item.imgUrl = strToArray(item.imgUrls)[0];
+        item.liker = strToArray(item.liker);
+        // liked - 该用户是否点赞该帖子
+        item.liked = false;
+        item.liker.forEach((likeUser) => {
+          if (likeUser == userId.toString()) {
+            item.liked = true;
+          }
+        });
+      });
+      res.json({
+        code: 200,
+        postList: dbRes,
+        totalNum: 10,
+        msg: "查询摄影贴成功",
+      });
+    } catch (error) {
+      res.status(500).send("服务器出问题:" + error);
+    }
+  }
+
   // 查询摄影贴详情
   async getPostByPostId(req, res) {
     const { postId } = req.body;
