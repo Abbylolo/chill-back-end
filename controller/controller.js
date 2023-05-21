@@ -130,14 +130,17 @@ class appController {
         // 粉丝列表 字符转数组
         circle.fans = strToArray(circle.fans);
 
-        if (circle.creator == userId) {
-          circle.state = 2;
+        if (userId !== null) {
+          if (circle.creator == userId) {
+            circle.state = 2;
+          }
+
+          circle.fansNum = circle.fans.length;
+          if (circle.fans.includes(userId.toString())) {
+            circle.state = 1;
+          }
         }
 
-        circle.fansNum = circle.fans.length;
-        if (circle.fans.includes(userId.toString())) {
-          circle.state = 1;
-        }
         circleList.push(circle);
       }
 
@@ -291,11 +294,13 @@ class appController {
         item.liker = strToArray(item.liker);
         // liked - 该用户是否点赞该帖子
         item.liked = false;
-        item.liker.forEach((likeUser) => {
-          if (likeUser == userId.toString()) {
-            item.liked = true;
-          }
-        });
+        if (userId) {
+          item.liker.forEach((likeUser) => {
+            if (likeUser == userId.toString()) {
+              item.liked = true;
+            }
+          });
+        }
       });
       res.json({
         code: 200,
