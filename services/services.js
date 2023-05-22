@@ -148,7 +148,7 @@ function getPostListByKeyword(keyword, currentPage, pageSize) {
   if (keyword == "全部") {
     sqlStr = `SELECT p.*,u.userId,u.userName,u.avatarUrl,u.brief as uBrief FROM User u,Post p where u.userId=p.User_userId`;
   } else {
-    sqlStr = `SELECT p.*,u.userId,u.userName,u.avatarUrl,u.brief as uBrief FROM User u,Post p where u.userId=p.User_userId AND p.brief like "%${keyword}%" OR tags like "%${keyword}%"`;
+    sqlStr = `SELECT p.*,u.userId,u.userName,u.avatarUrl,u.brief as uBrief FROM User u,Post p where u.userId=p.User_userId AND (p.brief like "%${keyword}%" OR tags like "%${keyword}%")`;
   }
   return new Promise((resolve, reject) => {
     connection.query(sqlStr, (err, results, fields) => {
