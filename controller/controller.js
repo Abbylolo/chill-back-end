@@ -186,12 +186,13 @@ class appController {
           code: -1,
           msg: "摄影圈中存在摄影贴，不可删除",
         });
+      } else {
+        await db.deleteCircle(circleId);
+        res.json({
+          code: 200,
+          msg: "删除摄影圈成功",
+        });
       }
-      await db.deleteCircle(circleId);
-      res.json({
-        code: 200,
-        msg: "删除摄影圈成功",
-      });
     } catch (error) {
       res.status(500).send("服务器出问题:" + error);
     }
@@ -442,9 +443,7 @@ class appController {
     // 图片数组字符化
     const imgUrlStr = arrayToStr(imgUrls);
     // 标签数组字符化
-    console.log("tags", tags);
     const tagStr = arrayToStr(tags);
-    console.log("tagStr", tagStr);
 
     try {
       await db.editPost(
