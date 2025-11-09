@@ -21,15 +21,20 @@ const connections = mysql.createPool({
   queueLimit: MYSQL_queueLimit,
 });
 
-connections.getConnection(function (err, conn) {
-  conn.connect((err) => {
+// 测试数据库连接
+try {
+  connections.getConnection(function (err, conn) {
     if (err) {
-      console.log("连接失败", err);
+      console.error("获取连接失败:", err);
     } else {
       console.log("数据库连接成功~");
+      // 获取连接后记得释放回池中
+      conn.release();
     }
   });
-});
+} catch (error) {
+  console.error("数据库连接错误:", error);
+}
 
 // module.exports = connections.promise();
 module.exports = connections;

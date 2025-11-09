@@ -1,0 +1,119 @@
+-- MySQL dump 10.13  Distrib 8.0.32, for macos13 (arm64)
+--
+-- Host: localhost    Database: chill
+-- ------------------------------------------------------
+-- Server version	8.0.32
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `Circle`
+--
+
+DROP TABLE IF EXISTS `Circle`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Circle` (
+  `circleId` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL,
+  `brief` varchar(200) DEFAULT '无',
+  `avatarUrl` varchar(100) DEFAULT NULL,
+  `fans` varchar(20000) DEFAULT NULL,
+  `createTime` varchar(45) NOT NULL,
+  `creator` int NOT NULL,
+  PRIMARY KEY (`circleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Circle`
+--
+
+LOCK TABLES `Circle` WRITE;
+/*!40000 ALTER TABLE `Circle` DISABLE KEYS */;
+INSERT INTO `Circle` VALUES (1,'未加入圈子','未加入圈子帖子集合',NULL,NULL,'2023-04-06 13:13:15',0),(7,'这里是杭州','专注杭州风景摄影一百年','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/de069f9209b7f44bb69d0680ba2f9449.jpg','22,34,18,','2023年05月12日 15:11:02',17),(9,'花花的世界','欢迎来到花花的世界！','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/43764a5bc02dcf497c6424981aeee220.JPEG','27,33,','2023年05月12日 15:31:52',18),(10,'惬意街景','如果你也喜欢拍摄街景图就加入我们叭!','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/987828dc112d6745a8f0300ddf98b657.jpg','17,30,34,','2023年05月12日 15:42:24',18),(19,'一些LIVE','各种LIVE现场图汇聚地','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/3ab51c627401ccc9f489c2ec4c3b8669.jpeg','18,','2023年05月25日 16:14:14',32),(20,'喵星人聚集地','爱猫人士进','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/969747d9912c2844726556771d583601.jpeg','32,','2023年05月25日 17:14:22',35);
+/*!40000 ALTER TABLE `Circle` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Post`
+--
+
+DROP TABLE IF EXISTS `Post`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Post` (
+  `postId` int NOT NULL AUTO_INCREMENT,
+  `brief` varchar(50) DEFAULT NULL,
+  `tags` varchar(120) DEFAULT NULL,
+  `cameraInfo` varchar(50) DEFAULT NULL,
+  `parameter` varchar(100) DEFAULT NULL,
+  `imgUrls` varchar(5000) DEFAULT NULL,
+  `liker` varchar(10000) DEFAULT NULL,
+  `createTime` varchar(45) NOT NULL,
+  `User_userId` int NOT NULL,
+  `Circle_circleId` int NOT NULL,
+  PRIMARY KEY (`postId`),
+  KEY `fk_Post_User_idx` (`User_userId`),
+  KEY `fk_Post_Circle1_idx` (`Circle_circleId`),
+  CONSTRAINT `fk_Post_Circle1` FOREIGN KEY (`Circle_circleId`) REFERENCES `Circle` (`circleId`),
+  CONSTRAINT `fk_Post_User` FOREIGN KEY (`User_userId`) REFERENCES `User` (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Post`
+--
+
+LOCK TABLES `Post` WRITE;
+/*!40000 ALTER TABLE `Post` DISABLE KEYS */;
+INSERT INTO `Post` VALUES (23,'杭州南山街的梧桐树街景','杭州,南山街,秋天','iphone13','曝光：+7；色调：+20','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/1fe5025dc0996e2e4008b99dd754f880.jpg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/2b418cab17a75a58798009614717fc09.jpg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/ceda214481455330c17f00752fffde82.jpg,','18,27,28,30,17,32,33,34,35,','2023年05月11日 09:52:28',18,10),(24,'吃绍兴臭豆腐，看绍兴夜景','绍兴,臭豆腐,夜景','OPPO','曝光：-50；色调：+80','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/7803d471eb0b6ef8350451bb0a87a040.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/00d2d49e29677e30d0e08399893f9625.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/7f23d2fbb3ea88d48f0d29d2ffcacc07.JPEG,','17,27,28,30,32,','2023年05月11日 10:29:20',18,10),(25,'绍兴的鲁迅故里走一走，再坐下乌篷船，一切都是那么惬意与舒适啊！','鲁迅故里,','OPPO','色调：-20','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/451cd77fb0f313a0bd3052f7310c158a.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/757c3077899de13dfbcb6180af1c5e42.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/cadba27c834659e42828b4bbbe0da5b1.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/2fa4bb7704758ed22238b70cfe6b973a.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/26230c13a1d43ef0147c8c149bd8521a.JPEG,','18,27,28,32,33,34,35,','2023年05月11日 10:34:05',18,10),(45,'一个多云天，去南宋御街走了走，拍下了这组图','杭州,南宋御街,','OPPO','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/7f210d352ffcb9260bbd534e5181ef27.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/4509d3b50611b5d36a1c68ff0cbc72e6.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/035ca3c7092c5e3a63531df5826176b9.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/2be60a4ae7148e581427df611c839def.JPEG,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/bd9644c3dc4da55d866126f5aa45e806.JPEG,','18,','2023年05月21日 17:45:11',17,7),(46,'演唱会上的三连拍','贺峻霖,人物,','OPPO','色调：-10','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/5cc6772e5e23c5859f28573098301191.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/3191148988d7144ca9ef9278f99f92ed.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/df18f0ebc58f43e1e7f69c4dd3076cf2.jpeg,','31,32,34,','2023年05月25日 16:07:06',31,1),(47,'贺峻霖发光神图','贺峻霖,人物,','OPPO','晕影：+20','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/81e118c701751ffae8f4d1dfb226f127.jpeg,','31,','2023年05月25日 16:08:42',31,1),(48,'薛之谦演唱会衢州站','薛之谦,演唱会,','VIVO','鲜明度：+30；高光：+22；对比度：-10','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/61ac0be9cb24d25843b92742366d7743.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/3339b50a400ff1865a831046c5862efa.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/7fdfdb9a6528006c723c6d8bc267f5a4.jpeg,','32,34,','2023年05月25日 16:16:16',32,19),(49,'薛之谦演唱会第二弹','薛之谦,演唱会,LIVE,','VIVO','鲜明度：+20','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/18df47be8deadbfd23b2e62690906126.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/f0876d2db5f6f37d9cd879086984075e.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/0036c51aad984380b1f4ca46d8a8a7ea.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/7c61275f8a5abd9dd932cb7eb436ea54.jpeg,','32,18,','2023年05月25日 16:16:41',32,19),(50,'杭州太子湾粉色郁金香','郁金香,杭州,花卉,','OPPO','饱和度：+20','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/556dad536184698bd3bcc4176fecb975.jpeg,','33,34,18,35,','2023年05月25日 16:25:00',33,9),(51,'太子湾五颜六色的郁金香花海','太子湾,杭州,郁金香,花卉,','OPPO','饱和度：+20','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/15f1fc5dd5e48abfe671c18cc2d672bc.jpeg,','33,34,18,35,','2023年05月25日 16:26:43',33,1),(52,'杭州灵隐寺景区','自然,杭州,','Iphone13','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/60305296354c308e3de7e37bc34da4e8.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/f09897edae3cc24ff1924665227fa817.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/9a2d4a1a72e6e1fd9207dbc8f867c322.jpeg,','34,','2023年05月25日 16:57:28',34,7),(53,'南京','南京,','Iphone13','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/abac6c1654734b5ad248c86cd1548e44.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/6d48de6a8f4bd0ed2b40a5b536ef90d0.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/49c8e48efb20e907c43c880fbef5483c.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/a14fcfd053d52a07e7f0fff67da97916.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/5fa4b973e856f0393558d9df680275c0.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/1ed3a76978d0062b82428c7da640f05f.jpeg,','34,18,35,32,','2023年05月25日 17:01:49',34,1),(54,'可爱','自然,','Iphone13','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/bc1ee527c976d7e8628a3af07c8622d7.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/92f948cd9e048897917e4e66cb9a99c0.jpeg,','18,','2023年05月25日 17:07:26',34,10),(55,'这构图简直封神','猫,动物,','VIVO','饱和度：+20；色调：+10','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/713ed3318da45330f54af02f6cb43caa.jpeg,','35,32,18,','2023年05月25日 17:16:05',35,20),(56,'捉到一只小白猫','猫,动物,','VIVO','色调：-6','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/e431d1fbc497b808579793a49292780e.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/381463331aefa0b523a56cdfb097f3fc.jpeg,','35,32,18,','2023年05月25日 17:16:48',35,20),(57,'好惬意的猫咪','猫,动物,','VIVO','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/a4e419788f766227e36d6e52f0c726bc.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/4109b2292fdf47ed14e0f47d8bc41141.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/e548c9598d744953a28a8406e39f1649.jpeg,','35,','2023年05月25日 17:18:01',35,20),(58,'学校风景图-HDU','学校,建筑,','VIVO','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/92fe05b59c82ec548584628909bf3bb6.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/b9655d3b5c96726ae3bf4e4510e250c5.jpeg,','32,','2023年05月25日 17:22:42',32,1),(59,'学校风景图2-HDU','学校,杭电,','VIVO','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/53035abb05a69cdc7576e65b190c8963.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/b800c2c4f19a9ae7aeb5740aa16504c5.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/9ceb9a12d302dc584bd2fc5b401e0bc4.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/a6c11482cd9e0bc55c68e27ae0eacb6d.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/c2fc97dcacc37bd813e791e8cf02c440.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/de308087b930f5b54d14983ff7002231.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/65bf4feafdb8e92c8d91de89419c586b.jpeg,','32,','2023年05月25日 17:25:40',32,1),(60,'夜晚的南京城','南京,游船,','Iphone13','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/c36bfe04840b82e11405a9d9a7403948.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/7a950fc38a47684ef533464685f7c83f.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/2827f6bd58d75ed4db354a478c02abb6.jpeg,','18,','2023年05月25日 17:36:41',34,1),(63,'南京','南京,','iPhone13','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/a1dc3f853855b7d9b5f32665c28ea29a.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/364eac517ca0f948a1815105d80b658b.jpeg,',NULL,'2023年05月25日 17:47:10',34,1),(64,'杭州灵隐寺景区','杭州,灵隐寺,','VIVO','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/6fbf0831847b9e3ceea5b731a4c98bbe.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/9d1b48bf384f8a9f3993fafc4d9c4029.jpeg,','32,','2023年05月25日 17:50:09',32,1),(65,'北高峰坐缆车','北高峰,','VIVO','无','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/2d3861ed04cb3754015598bfbc8bc1a5.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/7d34ffa59075c92991fb5fff025d1ac7.jpeg,https://chill-pic.oss-cn-hangzhou.aliyuncs.com/c0ab5533f12156ba4bc15ef5c0e5d79c.jpeg,',NULL,'2023年05月25日 17:57:29',32,1);
+/*!40000 ALTER TABLE `Post` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `User`
+--
+
+DROP TABLE IF EXISTS `User`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `User` (
+  `userId` int NOT NULL AUTO_INCREMENT,
+  `userName` varchar(10) NOT NULL,
+  `brief` varchar(50) DEFAULT '无',
+  `avatarUrl` varchar(100) DEFAULT NULL,
+  `password` varchar(12) NOT NULL,
+  PRIMARY KEY (`userId`)
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `User`
+--
+
+LOCK TABLES `User` WRITE;
+/*!40000 ALTER TABLE `User` DISABLE KEYS */;
+INSERT INTO `User` VALUES (17,'我是于谦吃不饱','平平无奇摄影爱好者','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/ef5810e44a0d67e2b6cb3266714858f0.PNG','123456'),(18,'Abby','搞怪风格摄影爱好者','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/bca24ceb1b5a13a48c5e97861dadf562.jpg','123456'),(19,'来一局','我是来一局','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/9b4d6c92cd7e811fda7dd0ea42187852.jpg','123456'),(22,'凶猛野猪','一头野猪','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/1748401d3971416607f21ae4ad6cf028.jpg','123456'),(27,'来一只','我是来一局','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/9b4d6c92cd7e811fda7dd0ea42187852.jpg','123456'),(28,'来一个','我是来一局','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/9b4d6c92cd7e811fda7dd0ea42187852.jpg','123456'),(29,'来一哈','我是来一局','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/9b4d6c92cd7e811fda7dd0ea42187852.jpg','123456'),(30,'来一把','我是来一局','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/9b4d6c92cd7e811fda7dd0ea42187852.jpg','123456'),(31,'犯困嫌疑人','喜欢睡觉 喜欢拍小贺','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/29d4ea2507775b286a9680cbe091da3f.JPG','123456'),(32,'好意思','我是好意思，好意思就是我','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/7ef0bec1802263e3f633e8ea26953184.JPG','123456'),(33,'philosoph','就爱乱拍','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/cff0c5ef346b37837bb05e8706a45339.JPG','123456'),(34,'一只羊','我是一只小小的羊','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/c045a13d302b6c514b8759cdd2617653.JPG','123456'),(35,'seseR_','喜欢猫猫','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/e69bddfdb7e67a0cf29d3a73f78f1d8a.JPG','123456'),(36,'111','1111','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/d9bdd7c7f69af05e0cbaa4a1c5a2cb59.jpeg','11111'),(37,'11','11','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/2ae61ac64a844593ebe19a9812862774.jpeg','11'),(38,'22','22','https://chill-pic.oss-cn-hangzhou.aliyuncs.com/53a18ddcc37b3f5e699534d45c92535b.jpeg','222');
+/*!40000 ALTER TABLE `User` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-06-08 16:08:37
